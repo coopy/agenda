@@ -1,0 +1,10 @@
+.root {
+  background: #eee;
+  border: 1px solid #666;
+  padding: 1em;
+  margin: 0 0 1em 0;
+}
+
+.list {
+  list-style-position: inside;
+}
