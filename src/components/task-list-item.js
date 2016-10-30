@@ -2,12 +2,13 @@ import React from 'react'
 
 import EditableLabel from './editable-label'
 
-export default ({id, label, focused}) => (
+export default ({id, label, focused, onTaskUpdated, onTaskBlur}) => (
   <li key={id}>
     <EditableLabel
       label={label}
       focused={focused}
-      labelChangedCallback={label => onTaskUpdated(id, label)}
+      onLabelChanged={label => onTaskUpdated(id, label)}
+      onTaskBlur={() => onTaskBlur(id)}
     />
   </li>
 )

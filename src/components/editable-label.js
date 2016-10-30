@@ -3,23 +3,19 @@ import React, { Component, PropTypes } from 'react'
 import styles from './editable-label.css'
 
 export default class EditableLabel extends Component {
-  constructor () {
-    super()
-    // TODO editing state is a (context?) ID prop this label can compare against its' related list
-    // item ID.
-    this.state = { editing: false }
-  }
+  handleInputBlur (value) {
 
-  handleInputBlur (ev) {
-    const { value } = ev.target
-    this.setState({ editing: false })
-    if (this.props.label !== value) {
-      this.props.labelChangedCallback(value)
+    const { onTaskBlur, onLabelChanged, label } = this.props
+
+    if (label !== value) {
+      onLabelChanged(value)
     }
+
+    onTaskBlur()
   }
 
   handleLabelClick (ev) {
-    this.setState({ editing: true })
+    // this.setState({ editing: true })
   }
 
   componentDidUpdate () {
@@ -32,44 +28,34 @@ export default class EditableLabel extends Component {
         className={styles.input}
         ref={(el) => this.$input = el}
         placeholder={this.props.prompt}
-        defaultValue={this.props.label}
-        onBlur={this.handleInputBlur.bind(this)}
+        value={this.props.label}
+        onChange={ev => this.props.onLabelChanged(ev.target.value)}
+        onBlur={ev => this.handleInputBlur(ev.target.value)}
       />
     )
   }
 
   renderLabel () {
     return (
-      <label
-        className={styles.label}
-        onClick={this.handleLabelClick.bind(this)}
-      >
+      <label className={styles.label}>
         {this.props.label}
       </label>
     )
   }
 
-  renderInputOrLabel () {
-    // return this.renderInput()
-
-    if (this.props.label && !this.state.editing) {
-      return this.renderLabel()
-    } else {
-      return this.renderInput()
-    }
-  }
-
   render () {
+    const {focused} = this.props
+
     return (
       <span className={styles.editableLabel}>
-        {this.renderInputOrLabel()}
+        {focused ? this.renderInput() : this.renderLabel()}
       </span>
     )
   }
 };
 
 EditableLabel.propTypes = {
-  labelChangedCallback: PropTypes.func.isRequired,
+  onLabelChanged: PropTypes.func.isRequired,
   prompt: PropTypes.string,
   label: PropTypes.string
 }

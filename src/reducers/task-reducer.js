@@ -24,14 +24,16 @@ export default function taskReducer (state = initialState, action) {
     case UPDATE_TASK: {
       const { taskId, taskLabel } = action.payload
       const task = _.find(state.tasks, { id: taskId })
-      const rest = _.reject(state.tasks, (list) => list === task)
+      // const rest = _.reject(state.tasks, (list) => list === task)
+      const taskIndex = state.tasks.indexOf(task)
 
       return Object.assign({}, state, {
         tasks: [
+          ...state.tasks.slice(0, taskIndex),
           Object.assign({}, task, {
             label: taskLabel
           }),
-          ...rest
+          ...state.tasks.slice(taskIndex + 1)
         ]
       })
     }
