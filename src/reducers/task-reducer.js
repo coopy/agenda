@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-import { UPDATE_LIST_NAME } from '../actions/task-actions'
+import { FOCUS_TASK, UPDATE_TASK } from '../actions/task-actions'
 
 const initialState = {
   tasks: [
@@ -14,13 +14,14 @@ const initialState = {
       label: 'Item number two',
       subtasks: []
     }
-  ]
+  ],
+  focusedTaskId: 'abc123'
 }
 
 export default function taskReducer (state = initialState, action) {
   switch (action.type) {
 
-    case UPDATE_LIST_NAME:
+    case UPDATE_TASK: {
       const { taskId, taskLabel } = action.payload
       const task = _.find(state.tasks, { id: taskId })
       const rest = _.reject(state.tasks, (list) => list === task)
@@ -33,10 +34,16 @@ export default function taskReducer (state = initialState, action) {
           ...rest
         ]
       })
-      break
+    }
+
+    case FOCUS_TASK: {
+      const { taskId } = action.payload
+      return Object.assign({}, state, {
+        focusedTaskId: taskId
+      })
+    }
 
     default:
       return state
-      break
   }
 }

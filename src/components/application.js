@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { updateTask } from '../actions/task-actions'
+import { focusTask, updateTask } from '../actions/task-actions'
 
 import TaskList from './task-list'
 
@@ -13,14 +13,15 @@ export class Application extends React.Component {
   render () {
     const { props } = this
     const { dispatch } = props
-    const { tasks } = props.taskReducer
+    const { tasks, focusedTaskId } = props.taskReducer
 
     return (
       <div className={styles.application}>
         <h1>Agenda</h1>
         <TaskList
           tasks={tasks}
-          focusedTaskId="nothing_yet"
+          focusedTaskId={focusedTaskId}
+          onFocusChange={taskId => dispatch(focusTask(taskId))}
           onTaskUpdated={(taskId, label) => dispatch(updateTask(taskId, label))}
         />
       </div>
