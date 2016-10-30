@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux'
 
-import listReducer from './list-reducer'
+import taskReducer from './task-reducer'
 
 const rootReducer = combineReducers({
-  listReducer
+  taskReducer
 })
 
 export default rootReducer

@@ -1,15 +1,12 @@
 import React, { Component, PropTypes } from 'react'
 
-const styles = {
-  base: {
-    fontSize: '1em',
-    display: 'block'
-  }
-}
+import styles from './editable-label.css'
 
 export default class EditableLabel extends Component {
   constructor () {
     super()
+    // TODO editing state is a (context?) ID prop this label can compare against its' related list
+    // item ID.
     this.state = { editing: false }
   }
 
@@ -32,7 +29,7 @@ export default class EditableLabel extends Component {
   renderInput () {
     return (
       <input
-        style={styles.base}
+        className={styles.input}
         ref={(el) => this.$input = el}
         placeholder={this.props.prompt}
         defaultValue={this.props.label}
@@ -43,16 +40,18 @@ export default class EditableLabel extends Component {
 
   renderLabel () {
     return (
-      <strong
-        style={styles.base}
+      <label
+        className={styles.label}
         onClick={this.handleLabelClick.bind(this)}
       >
         {this.props.label}
-      </strong>
+      </label>
     )
   }
 
   renderInputOrLabel () {
+    // return this.renderInput()
+
     if (this.props.label && !this.state.editing) {
       return this.renderLabel()
     } else {
@@ -62,7 +61,7 @@ export default class EditableLabel extends Component {
 
   render () {
     return (
-      <span>
+      <span className={styles.editableLabel}>
         {this.renderInputOrLabel()}
       </span>
     )

@@ -1,0 +1,9 @@
+.application {
+  margin: 0.5em 1em;
+  font: 16px BlinkMacSystemFont, sans-serif;
+}
+
+.application h1 {
+  font-size: 2em;
+  margin-bottom: 0.25em;
+}
