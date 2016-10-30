@@ -1,14 +1,15 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { UPDATE_TASK } from '../actions/task-actions'
+import { updateTask } from '../actions/task-actions'
 
-import EditableLabel from './editable-label'
+import TaskList from './task-list'
 
 require('../styles/reset.css')
 import styles from './application.css'
 
 export class Application extends React.Component {
+
   render () {
     const { props } = this
     const { dispatch } = props
@@ -17,13 +18,11 @@ export class Application extends React.Component {
     return (
       <div className={styles.application}>
         <h1>Agenda</h1>
-        {tasks.map(task => (
-          <EditableLabel
-            key={task.id}
-            label={task.label}
-            labelChangedCallback={label => dispatch(updateTask(task.id, label))}
-          />
-        ))}
+        <TaskList
+          tasks={tasks}
+          focusedTaskId="nothing_yet"
+          onTaskUpdated={(taskId, label) => dispatch(updateTask(taskId, label))}
+        />
       </div>
     )
   }
