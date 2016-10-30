@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npm run lint",
     "lint": "eslint --fix --ext .js src/",
-    "start": "webpack-dev-server --hot --inline",
+    "start": "webpack-dashboard -c magenta -- webpack-dev-server --hot --inline",
     "build": "webpack"
   },
   "author": "Per Nilsson <per@sproutlab.com>",
@@ -32,6 +32,7 @@
     "estraverse": "4.1.1",
     "style-loader": "^0.13.1",
     "webpack": "1.12.2",
+    "webpack-dashboard": "^0.2.0",
     "webpack-dev-server": "1.12.0"
   }
 }
