@@ -48,16 +48,20 @@ export default ({tasks, focusedTaskId, onFocusChange, onTaskUpdated}) => {
     }
   }
 
-  return (<ul onKeyUp={ev => handleArrowKeyPress(ev.key)}>
-    {tasks.map((task, index) => (
-      <TaskListItem
-        label={task.label}
-        id={task.id}
-        key={task.id}
-        focused={task.id === focusedTaskId}
-        onTaskUpdated={onTaskUpdated}
-        onTaskBlur={() => handleTaskBlur(index)}
-      />
-    ))}
-  </ul>)
+  return (
+    <ul onKeyUp={ev => handleArrowKeyPress(ev.key)}>
+      {tasks.map((task, index) => (
+        <TaskListItem
+          label={task.label}
+          id={task.id}
+          key={task.id}
+          focused={task.id === focusedTaskId}
+          onTaskUpdated={onTaskUpdated}
+          // TODO This gets passed ID from child
+          onTaskBlur={() => handleTaskBlur(index)}
+          onTaskFocus={id => onFocusChange(id)}
+        />
+      ))}
+    </ul>
+  )
 }
