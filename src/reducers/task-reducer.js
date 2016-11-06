@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-import { CREATE_TASK, FOCUS_TASK, UPDATE_TASK } from '../actions/task-actions'
+import { CREATE_TASK, FOCUS_TASK, MAKE_SUBTASK, UPDATE_TASK } from '../actions/task-actions'
 
 const initialState = {
   tasks: [
@@ -34,6 +34,37 @@ export default function taskReducer (state = initialState, action) {
         // Dirty trick: Focus the newly created task!
         focusedTaskId: taskId
       })
+    }
+
+    case MAKE_SUBTASK: {
+      const { tasks } = state
+      const { taskId, parentTaskId } = action.payload
+
+      const task = _.find(tasks, { id: taskId })
+      const parentTask = _.find(tasks, { id: parentTaskId })
+
+      if (task && parentTask) {
+        const taskIndex = tasks.indexOf(task)
+        const tasksWithoutSubtask = [
+          ...tasks.slice(0, taskIndex),
+          ...tasks.slice(taskIndex + 1)
+        ]
+        const parentTaskIndex = tasksWithoutSubtask.indexOf(parentTask)
+
+        const updatedParentTask = Object.assign({}, parentTask, {
+          subtasks: parentTask.subtasks.concat(task)
+        })
+
+        return Object.assign({}, state, {
+        tasks: [
+          ...tasksWithoutSubtask.slice(0, parentTaskIndex),
+          updatedParentTask,
+          ...tasksWithoutSubtask.slice(parentTaskIndex + 1)
+        ]
+      })
+      }
+
+      return state
     }
 
     case UPDATE_TASK: {

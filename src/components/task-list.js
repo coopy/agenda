@@ -5,7 +5,7 @@ import uuid from 'uuid'
 import TaskListItem from './task-list-item'
 
 
-export default ({tasks, focusedTaskId, onFocusChange, onTaskCreated, onTaskUpdated}) => {
+export default ({tasks, focusedTaskId, onFocusChange, onMakeSubtask, onTaskCreated, onTaskUpdated}) => {
   // TODO Only listen for keyboard and blur events when you "own" a taskId.
   const focusedTask = _.find(tasks, { id: focusedTaskId })
   const focusedTaskIndex = tasks.indexOf(focusedTask)
@@ -31,6 +31,17 @@ export default ({tasks, focusedTaskId, onFocusChange, onTaskCreated, onTaskUpdat
   const createNewTask = (label = '') => {
     const taskId = uuid()
     onTaskCreated(taskId, label)
+  }
+
+  const makeSubTask = taskId => {
+    const task = _.find(tasks, { id: taskId })
+    const taskIndex = tasks.indexOf(task)
+
+    if (taskIndex === 0) return
+
+    const parentTask = tasks[taskIndex - 1]
+
+    onMakeSubtask(taskId, parentTask.id)
   }
 
   const handleKeyPress = key => {
@@ -64,11 +75,17 @@ export default ({tasks, focusedTaskId, onFocusChange, onTaskCreated, onTaskUpdat
           label={task.label}
           id={task.id}
           key={task.id}
+          subtasks={task.subtasks}
+          focusedTaskId={focusedTaskId}
           focused={task.id === focusedTaskId}
           onTaskUpdated={onTaskUpdated}
           // TODO This gets passed ID from child
           onTaskBlur={() => handleTaskBlur(index)}
           onTaskFocus={id => onFocusChange(id)}
+          onTab={id => makeSubTask(id)}
+          onFocusChange={onFocusChange}
+          onTaskCreated={onTaskCreated}
+          onTaskUpdated={onTaskUpdated}
         />
       ))}
     </ul>

@@ -4,8 +4,7 @@ import styles from './editable-label.css'
 
 export default class EditableLabel extends Component {
   handleInputBlur (value) {
-
-    const { onTaskBlur, onLabelChanged, label } = this.props
+    const { label, onTaskBlur, onLabelChanged } = this.props
 
     if (label !== value) {
       onLabelChanged(value)
@@ -27,14 +26,24 @@ export default class EditableLabel extends Component {
   }
 
   renderInput () {
+    const { id, label, onTab, prompt, onLabelChanged } = this.props
+
     return (
       <input
         className={styles.input}
         ref={(el) => this.$input = el}
-        placeholder={this.props.prompt}
-        value={this.props.label}
-        onChange={ev => this.props.onLabelChanged(ev.target.value)}
+        placeholder={prompt}
+        value={label}
+        onChange={ev => onLabelChanged(ev.target.value)}
         onBlur={ev => this.handleInputBlur(ev.target.value)}
+        onKeyDown={ev => {
+          if (ev.key === 'Tab') {
+          console.log(id, ev.key)
+            ev.preventDefault()
+            ev.stopPropagation()
+            onTab(id)
+          }
+        }}
       />
     )
   }
