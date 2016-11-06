@@ -11,6 +11,10 @@ export default ({tasks, focusedTaskId, onFocusChange, onTaskCreated, onTaskUpdat
   const focusedTaskIndex = tasks.indexOf(focusedTask)
 
   const focusNextOrCreateNewTask = index => {
+    const value = tasks[index].label.trim()
+
+    if (!value) return
+
     const nextTaskIndex = index + 1
 
     if (nextTaskIndex === tasks.length) {
