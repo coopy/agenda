@@ -4,7 +4,6 @@ import EditableLabel from './editable-label'
 
 export default ({id, label, focused, onTaskUpdated, onTaskBlur, onTaskFocus}) => (
   <li
-    key={id}
     onClick={() => onTaskFocus(id)}
   >
     <EditableLabel

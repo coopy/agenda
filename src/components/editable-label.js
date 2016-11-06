@@ -18,6 +18,10 @@ export default class EditableLabel extends Component {
     // this.setState({ editing: true })
   }
 
+  componentDidMount () {
+    this.$input && this.$input.focus()
+  }
+
   componentDidUpdate () {
     this.$input && this.$input.focus()
   }

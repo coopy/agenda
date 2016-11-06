@@ -1,14 +1,35 @@
-import React from 'react'
 import _ from 'lodash'
+import React from 'react'
+import uuid from 'uuid'
 
 import TaskListItem from './task-list-item'
 
-export default ({tasks, focusedTaskId, onFocusChange, onTaskUpdated}) => {
+
+export default ({tasks, focusedTaskId, onFocusChange, onTaskCreated, onTaskUpdated}) => {
   // TODO Only listen for keyboard and blur events when you "own" a taskId.
   const focusedTask = _.find(tasks, { id: focusedTaskId })
   const focusedTaskIndex = tasks.indexOf(focusedTask)
 
-  const handleArrowKeyPress = key => {
+  const focusNextOrCreateNewTask = index => {
+    const nextTaskIndex = index + 1
+
+    if (nextTaskIndex === tasks.length) {
+      return createNewTask()
+    }
+
+    const nextTask = tasks[nextTaskIndex]
+
+    if (nextTask) {
+      onFocusChange(nextTask.id)
+    }
+  }
+
+  const createNewTask = (label = '') => {
+    const taskId = uuid()
+    onTaskCreated(taskId, label)
+  }
+
+  const handleKeyPress = key => {
     const fnMap = {
       ArrowUp: () => {
         if (focusedTaskIndex > 0) {
@@ -21,35 +42,19 @@ export default ({tasks, focusedTaskId, onFocusChange, onTaskUpdated}) => {
           // Focus on next task
           onFocusChange(tasks[focusedTaskIndex + 1].id)
         }
-      }
+      },
+      Enter: () => focusNextOrCreateNewTask(focusedTaskIndex)
     }
-
-    console.log(key)
 
     if (fnMap[key]) fnMap[key]()
   }
 
   const handleTaskBlur = index => {
-    // TODO DO NOT EARLY RETURN
-    return
-
-    const nextTaskIndex = index + 1
-
-    if (nextTaskIndex === tasks.length) {
-      // TODO Blurred last task; create new task
-      // TODO create new task ID
-      return
-    }
-
-    const nextTask = tasks[nextTaskIndex]
-
-    if (nextTask) {
-      onFocusChange(nextTask.id)
-    }
+    // focusNextOrCreateNewTask(index)
   }
 
   return (
-    <ul onKeyUp={ev => handleArrowKeyPress(ev.key)}>
+    <ul onKeyUp={ev => handleKeyPress(ev.key)}>
       {tasks.map((task, index) => (
         <TaskListItem
           label={task.label}

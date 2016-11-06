@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-import { FOCUS_TASK, UPDATE_TASK } from '../actions/task-actions'
+import { CREATE_TASK, FOCUS_TASK, UPDATE_TASK } from '../actions/task-actions'
 
 const initialState = {
   tasks: [
@@ -20,6 +20,21 @@ const initialState = {
 
 export default function taskReducer (state = initialState, action) {
   switch (action.type) {
+
+    case CREATE_TASK: {
+      const { taskId, taskLabel } = action.payload
+
+      return Object.assign({}, state, {
+        tasks: state.tasks.concat([
+          {
+            id: taskId,
+            label: taskLabel || ''
+          }
+        ]),
+        // Dirty trick: Focus the newly created task!
+        focusedTaskId: taskId
+      })
+    }
 
     case UPDATE_TASK: {
       const { taskId, taskLabel } = action.payload

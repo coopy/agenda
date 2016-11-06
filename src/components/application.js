@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { focusTask, updateTask } from '../actions/task-actions'
+import { createTask, focusTask, updateTask } from '../actions/task-actions'
 
 import TaskList from './task-list'
 
@@ -23,6 +23,7 @@ export class Application extends React.Component {
           focusedTaskId={focusedTaskId}
           onFocusChange={taskId => dispatch(focusTask(taskId))}
           onTaskUpdated={(taskId, label) => dispatch(updateTask(taskId, label))}
+          onTaskCreated={(taskId, label) => dispatch(createTask(taskId, label))}
         />
       </div>
     )
