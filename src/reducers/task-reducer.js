@@ -7,7 +7,7 @@ const initialState = {
     {
       id: 'abc123',
       label: 'Task number one',
-      subtasks: ['Do the thing', 'Do another thing']
+      subtasks: []
     },
     {
       id: 'bcd234',
@@ -28,7 +28,8 @@ export default function taskReducer (state = initialState, action) {
         tasks: state.tasks.concat([
           {
             id: taskId,
-            label: taskLabel || ''
+            label: taskLabel || '',
+            subtasks: []
           }
         ]),
         // Dirty trick: Focus the newly created task!

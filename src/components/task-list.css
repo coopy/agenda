@@ -1,0 +1,11 @@
+.subtaskList li {
+  padding-left: 1em;
+}
+
+.subtaskList li * {
+  display: inline-block;
+}
+
+.subtaskList li > :before {
+  content: '- ';
+}

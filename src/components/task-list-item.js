@@ -3,18 +3,19 @@ import React from 'react'
 import EditableLabel from './editable-label'
 import TaskList from './task-list'
 
-export default ({id, label, subtasks, focused, focusedTaskId, onTab, onTaskUpdated, onTaskBlur, onTaskFocus}) => {
+export default ({id, label, subtasks, focused, focusedTaskId, onFocusChange, onTaskCreated, onTaskUpdated, onTab, onTaskBlur, onTaskFocus}) => {
 
   const renderSubtasks = () => {
     if (!subtasks || !subtasks.length) return null
 
     return  (
       <TaskList
+        isSubtaskList={true}
         tasks={subtasks}
         focusedTaskId={focusedTaskId}
-        onFocusChange={taskId => dispatch(focusTask(taskId))}
-        onTaskUpdated={(taskId, label) => dispatch(updateTask(taskId, label))}
-        onTaskCreated={(taskId, label) => dispatch(createTask(taskId, label))}
+        onFocusChange={onFocusChange}
+        onTaskUpdated={onTaskUpdated}
+        onTaskCreated={onTaskCreated}
         // onMakeSubtask={(taskId, parentTaskId) => dispatch(makeSubtask(taskId, parentTaskId))}
         onMakeSubtask={() => {}}
       />
@@ -23,7 +24,10 @@ export default ({id, label, subtasks, focused, focusedTaskId, onTab, onTaskUpdat
 
   return (
     <li
-      onClick={() => onTaskFocus(id)}
+      onClick={(ev) => {
+        ev.stopPropagation();
+        onTaskFocus(id)}
+      }
     >
       <EditableLabel
         label={label}

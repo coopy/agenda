@@ -4,8 +4,9 @@ import uuid from 'uuid'
 
 import TaskListItem from './task-list-item'
 
+import styles from './task-list.css'
 
-export default ({tasks, focusedTaskId, onFocusChange, onMakeSubtask, onTaskCreated, onTaskUpdated}) => {
+export default ({tasks, isSubtaskList, focusedTaskId, onFocusChange, onMakeSubtask, onTaskCreated, onTaskUpdated}) => {
   // TODO Only listen for keyboard and blur events when you "own" a taskId.
   const focusedTask = _.find(tasks, { id: focusedTaskId })
   const focusedTaskIndex = tasks.indexOf(focusedTask)
@@ -69,7 +70,10 @@ export default ({tasks, focusedTaskId, onFocusChange, onMakeSubtask, onTaskCreat
   }
 
   return (
-    <ul onKeyUp={ev => handleKeyPress(ev.key)}>
+    <ul
+      className={isSubtaskList ? styles.subtaskList : null}
+      onKeyUp={ev => handleKeyPress(ev.key)}
+    >
       {tasks.map((task, index) => (
         <TaskListItem
           label={task.label}
